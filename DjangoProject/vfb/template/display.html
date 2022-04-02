@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DATA_DISPLAY</title>
+    <link href="/static/bootstrap-3.4.1-dist/css/bootstrap.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="/static/bootstrap-3.4.1-dist/js/bootstrap.js"></script>
+
+</head>
+<body>
+<h1 class="text-center">DATA_DISPLAY</h1>
+<div class="container">
+    <div class="col-md-8 col-md-offset-2">
+       <table class="table table-hover">
+           <thead>
+               <tr>
+                   <th>id_driver</th>
+                   <th>offense</th>
+               </tr>
+           </thead>
+           <tbody>
+               {% for data in data_list %}
+               <tr>
+                   <td>{{ data.drive_id }}</td>
+                   <td>{{ data.offense }}</td>
+                   <td>
+                       <a href="" class="btn btn-xs btn-success">EDIT</a>
+                       <a href="" class="btn btn-xs btn-danger">DELETE</a>
+                   </td>
+               </tr>
+                {% endfor %}
+           </tbody>
+       </table>
+    </div>
+</div>
+</body>
+</html>

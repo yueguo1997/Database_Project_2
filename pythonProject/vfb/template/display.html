@@ -1,0 +1,102 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>TableView - Startup</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</head>
+<body style="background-image: url({% static 'data_bg.jpg' %});
+        background-size:100% 100%;">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="">VFB Analysis Website</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="">Table</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="manage/delete">Management</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+
+
+<div class="list-group list-group-horizontal">
+  <a href="#" class="list-group-item list-group-item-action" aria-current="true">
+    The current link item
+  </a>
+  <a href="#" class="list-group-item list-group-item-action">A second link item</a>
+  <a href="#" class="list-group-item list-group-item-action">A third link item</a>
+  <a href="#" class="list-group-item list-group-item-action">A fourth link item</a>
+</div>
+<br>
+<br>
+ <form action = "display">
+      <label for = "">
+          ID: <input type = "text" name = "id">
+      </label>
+   <label for = "">
+          Driver ID: <input type = "text" name = "driver">
+      </label>
+   <label for = "">
+          Play Number: <input type = "text" name = "play number">
+      </label>
+     <label for = "">
+          Year: <input type = "text" name = "year">
+      </label>
+     <label for = "">
+          Home: <input type = "text" name = "home">
+      </label>
+      <label for = "">
+          <input type = "submit" value = "Search">
+      </label>
+  </form>
+<br><br>
+
+
+<div class="container">
+  <h2 class="text-center">VFB play by play</h2><br>
+  <table class="table table-light table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Drive id</th>
+        <th>Play number</th>
+        <th>Home</th>
+          <th>Year</th>
+          <th>Offense</th>
+          <th>defense</th>
+          <th>score</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% if db %}
+    {% for i in db %}
+      <tr>
+        <td>{{i.i_d}}</td>
+        <td>{{i.drive_id}}</td>
+        <td>{{i.play_number}}</td>
+        <td>{{i.home}}</td>
+        <td>{{i.year}}</td>
+          <td>{{i.offense}}</td>
+        <td>{{i.defense}}</td>
+          <td>{{i.scoring}}</td>
+      </tr>
+    {% endfor %}
+    {% endif %}
+    </tbody>
+  </table>
+</div>
+
+</body>
+</html>

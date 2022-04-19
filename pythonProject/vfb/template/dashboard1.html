@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="container">
+  <h2 class="text-center"><u>VFB play by play</u></h2><br>
+  <table class="table table-light table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Drive id</th>
+        <th>Play number</th>
+        <th>Home</th>
+          <th>Year</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% if data_list %}
+    {% for i in data_condition_list %}
+      <tr>
+        <td>{{i.i_d}}</td>
+        <td>{{i.drive_id}}</td>
+        <td>{{i.play_number}}</td>
+        <td>{{i.home}}</td>
+        <td>{{i.year}}</td>
+      </tr>
+    {% endfor %}
+    {% endif %}
+    </tbody>
+  </table>
+</div>
+</body>
+</html>

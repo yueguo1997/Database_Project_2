@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
-    <title>index</title>
+    <title>Home</title>
 </head>
 <body style="background-image: url({% static '3.jpg' %});
         background-size:100% 350%;background-repeat:no-repeat;background-color:rgba(0,0,0,0);">
@@ -19,22 +19,18 @@
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav">
       <li class="nav-item active">
-        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/vfb_data/login">Login</a>
+        <a class="nav-link" href="">Home <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="/vfb_data/display" id="navbarDropdown" role="button" data-toggle="dropdown" aria-expanded="false">DataDisplay</a>
+        <a class="nav-link dropdown-toggle" href="display" id="navbarDropdown" role="button" data-toggle="dropdown" aria-expanded="false">VFBData</a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="/vfb_data/display">Display</a>
-
+          <a class="dropdown-item" href="/vfb_data/game">Display</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Management</a>
+          <a class="dropdown-item" href="vfb_data/delete">Management</a>
         </div>
       </li>
       <li class="nav-item">
-        <a class="nav-link">Dashboard</a>
+        <a class="nav-link" href = "vfb_data/dashboard1">Dashboard</a>
       </li>
     </ul>
   </div>

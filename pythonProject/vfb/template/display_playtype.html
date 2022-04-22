@@ -20,7 +20,7 @@
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav">
         <li class="nav-item">
-        <a class="nav-link" href="http://127.0.0.1:8000/">Home</a>
+        <a class="nav-link" href="">Home</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="">Display</a>
@@ -47,43 +47,30 @@
 </div>
 <br>
 <br>
-
-
-
- <form action = "game">
+<center>
+ <form action = "play_type">
       <label for = "">
-          Game_ID: <input type = "text" name = "game_id">
+          Play_Type: <input type = "text" name = "search_playtype">
       </label>
    <label for = "">
-          Home: <input type = "text" name = "home">
-      </label>
-   <label for = "">
-          Away: <input type = "text" name = "away">
-      </label>
-     <label for = "">
-          Week: <input type = "text" name = "week">
-      </label>
-     <label for = "">
-          Season: <input type = "text" name = "season">
+          Scoring: <input type = "text" name = "search_score">
       </label>
       <label for = "">
            <input type = "submit" value = "Search">
       </label>
   </form>
+  </center>
 <br><br>
 
 
 <div class="container">
-  <h2 class="text-center">Game</h2><br>
+  <h2 class="text-center">Play Type</h2><br>
   <table class="table table-light table-striped">
     <thead>
       <tr>
 
-        <th>Game id</th>
-          <th>Home</th>
-           <th>Away</th>
-          <th>Week</th>
-          <th>Season</th>
+        <th>Play_Type</th>
+          <th>Scoring</th>
 
 
       </tr>
@@ -92,11 +79,10 @@
     {% if db %}
     {% for i in db %}
       <tr>
-        <td>{{i.game_id}}</td>
-          <td>{{i.home}}</td>
-          <td>{{i.away}}</td>
-          <td>{{i.week}}</td>
-          <td>{{i.season}}</td>
+        <td>{{i.play_type}}</td>
+          <td>{{i.scoring}}</td>
+
+
       </tr>
     {% endfor %}
     {% endif %}

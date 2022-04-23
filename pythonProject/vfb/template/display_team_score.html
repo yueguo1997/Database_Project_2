@@ -20,7 +20,7 @@
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav">
         <li class="nav-item">
-        <a class="nav-link" href="">Home</a>
+        <a class="nav-link" href="http://127.0.0.1:8000/">Home</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="">Display</a>
@@ -31,8 +31,7 @@
         <li class="nav-item">
         <a class="nav-link" href="dashboard1">Dashboard</a>
       </li>
-
-        <li class="nav-item">
+      <li class="nav-item">
         <a class="nav-link" href="drive_dairy">Action_Dairy</a>
       </li>
     </ul>
@@ -47,34 +46,37 @@
   </a>
   <a href="play_type" class="list-group-item list-group-item-action">Play Type</a>
   <a href="game_score" class="list-group-item list-group-item-action">Game Score</a>
-  <a href="team_score" class="list-group-item list-group-item-action">team_score</a>
+  <a href="team_score" class="list-group-item list-group-item-action">Team Score</a>
 </div>
 <br>
 <br>
+
+
 <center>
- <form action = "play_type">
+ <form action = "team_score">
       <label for = "">
-          Play_Type: <input type = "text" name = "search_playtype">
+          Season: <input type = "text" name = "search_teamscore_season">
       </label>
    <label for = "">
-          Scoring: <input type = "text" name = "search_score">
+          Team: <input type = "text" name = "search_teamscore_team">
       </label>
       <label for = "">
            <input type = "submit" value = "Search">
       </label>
   </form>
-  </center>
+    <center>
 <br><br>
 
 
 <div class="container">
-  <h2 class="text-center">Play Type</h2><br>
+  <h2 class="text-center">Team Score</h2><br>
   <table class="table table-light table-striped">
     <thead>
       <tr>
 
-        <th>Play_Type</th>
-          <th>Scoring</th>
+        <th>Team</th>
+          <th>Season</th>
+          <th>Score</th>
 
 
       </tr>
@@ -83,10 +85,9 @@
     {% if db %}
     {% for i in db %}
       <tr>
-        <td>{{i.play_type}}</td>
-          <td>{{i.scoring}}</td>
-
-
+        <td>{{i.winner}}</td>
+          <td>{{i.season}}</td>
+          <td>{{i.wins}}</td>
       </tr>
     {% endfor %}
     {% endif %}

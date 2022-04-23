@@ -9,7 +9,7 @@ from django.db import models
 
 
 class AllPlays(models.Model):
-    i_d = models.BigIntegerField(db_column='I_D', blank=True, primary_key=True)  # Field name made lowercase.
+    i_d = models.BigIntegerField(db_column='I_D', blank=True, null=True)  # Field name made lowercase.
     drive_id = models.BigIntegerField(blank=True, null=True)
     game_id = models.BigIntegerField(blank=True, null=True)
     drive_number = models.IntegerField(blank=True, null=True)
@@ -169,6 +169,18 @@ class Drive(models.Model):
         db_table = 'drive'
 
 
+class DriveDairy(models.Model):
+    action_id = models.AutoField(primary_key=True)
+    drive_id = models.BigIntegerField(blank=True, null=True)
+    play_number = models.IntegerField(blank=True, null=True)
+    action_time = models.DateTimeField(blank=True, null=True)
+    action = models.CharField(max_length=255, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'drive_dairy'
+
+
 class Game(models.Model):
     game_id = models.BigIntegerField(primary_key=True)
     home = models.CharField(max_length=255, blank=True, null=True)
@@ -180,6 +192,22 @@ class Game(models.Model):
     class Meta:
         managed = False
         db_table = 'game'
+
+
+class GameDairy(models.Model):
+    action_id = models.AutoField(primary_key=True)
+    game_id = models.BigIntegerField(blank=True, null=True)
+    home = models.CharField(max_length=255, blank=True, null=True)
+    away = models.CharField(max_length=255, blank=True, null=True)
+    week = models.IntegerField(blank=True, null=True)
+    season = models.IntegerField(blank=True, null=True)
+    year = models.CharField(max_length=255, blank=True, null=True)
+    action_time = models.DateTimeField(blank=True, null=True)
+    action = models.CharField(max_length=255, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'game_dairy'
 
 
 class Play(models.Model):
@@ -202,7 +230,7 @@ class Play(models.Model):
 
 class PlayDrive(models.Model):
     i_d = models.BigAutoField(db_column='I_D', primary_key=True)  # Field name made lowercase.
-    drive = models.ForeignKey(Play, models.DO_NOTHING, blank=True, null=True,related_name = "drive")
+    drive = models.ForeignKey(Play, models.DO_NOTHING, blank=True, null=True, related_name = "drive")
     play_number = models.ForeignKey(Play, models.DO_NOTHING, db_column='play_number', blank=True, null=True)
     clock = models.CharField(max_length=255, blank=True, null=True)
     yard_line = models.IntegerField(blank=True, null=True)
@@ -249,12 +277,22 @@ class TeamOffense(models.Model):
         db_table = 'team_offense'
         unique_together = (('offense', 'year'),)
 
-
-
-
-class cpt(models.Model):
-    drive_id = models.BigIntegerField(primary_key=True)
-    drive_number = models.IntegerField()
+class GameScore(models.Model):
+    game_id = models.BigIntegerField(primary_key=True)
+    season = models.IntegerField()
+    home = models.CharField(max_length=255)
+    away = models.CharField(max_length=255)
+    home_score  = models.BigIntegerField()
+    away_score = models.BigIntegerField()
     class Meta:
         managed = False
-        db_table = 'cpt'
+        db_table = 'game_score'
+
+
+class TeamScore(models.Model):
+    season = models.IntegerField(primary_key= True)
+    winner = models.CharField(max_length=255)
+    wins = models.IntegerField()
+    class Meta:
+        managed = False
+        db_table = 'team_score'

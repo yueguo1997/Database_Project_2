@@ -20,7 +20,7 @@
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav">
         <li class="nav-item">
-        <a class="nav-link" href="">Home</a>
+        <a class="nav-link" href="http://127.0.0.1:8000/">Home</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="">Display</a>
@@ -33,48 +33,33 @@
       </li>
 
         <li class="nav-item">
-        <a class="nav-link" href="drive_dairy">Action_Dairy</a>
+        <a class="nav-link" href="game_dairy">Action_Dairy</a>
       </li>
     </ul>
   </div>
 </nav>
-
-
-
-<div class="list-group list-group-horizontal">
-  <a href="game" class="list-group-item list-group-item-action" aria-current="true">
-    Game
-  </a>
-  <a href="play_type" class="list-group-item list-group-item-action">Play Type</a>
-  <a href="game_score" class="list-group-item list-group-item-action">Game Score</a>
-  <a href="team_score" class="list-group-item list-group-item-action">team_score</a>
-</div>
 <br>
+
+
+
+<a class="btn btn-info" href="drive_dairy" role="button">Drive Operation Log</a>
+<a class="btn btn-info" href="game_dairy" role="button">Game Operation Log</a>
 <br>
-<center>
- <form action = "play_type">
-      <label for = "">
-          Play_Type: <input type = "text" name = "search_playtype">
-      </label>
-   <label for = "">
-          Scoring: <input type = "text" name = "search_score">
-      </label>
-      <label for = "">
-           <input type = "submit" value = "Search">
-      </label>
-  </form>
-  </center>
-<br><br>
-
-
 <div class="container">
-  <h2 class="text-center">Play Type</h2><br>
+  <h2 class="text-center">Game Operation Log</h2><br>
   <table class="table table-light table-striped">
     <thead>
       <tr>
 
-        <th>Play_Type</th>
-          <th>Scoring</th>
+        <th>Action ID</th>
+          <th>Game ID</th>
+           <th>Home</th>
+        <th>Away</th>
+        <th>Week</th>
+        <th>Season</th>
+        <th>Year</th>
+        <th>Action Time</th>
+        <th>Actin</th>
 
 
       </tr>
@@ -83,9 +68,15 @@
     {% if db %}
     {% for i in db %}
       <tr>
-        <td>{{i.play_type}}</td>
-          <td>{{i.scoring}}</td>
-
+        <td>{{i.action_id}}</td>
+          <td>{{i.game_id}}</td>
+          <td>{{i.home}}</td>
+        <td>{{i.away}}</td>
+          <td>{{i.week}}</td>
+        <td>{{i.season}}</td>
+        <td>{{i.year}}</td>
+          <td>{{i.action_time}}</td>
+        <td>{{i.action}}</td>
 
       </tr>
     {% endfor %}
@@ -93,6 +84,7 @@
     </tbody>
   </table>
 </div>
+
 
 </body>
 </html>

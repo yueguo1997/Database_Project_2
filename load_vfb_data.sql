@@ -156,14 +156,31 @@ CREATE TABLE play_drive(
 
 DROP TABLE IF EXISTS drive_dairy;
 CREATE TABLE drive_dairy(
-action_id      INT         AUTO_INCREMENT,
+action_id        INT               AUTO_INCREMENT,
 drive_id         BIGINT,
 play_number      INT,
-action_time       DATETIME,
+action_time      DATETIME,
+action           VARCHAR(255)      CHECK(action IN ("insert", "update","delete")),
 PRIMARY KEY(action_id)
 );
 
--- INSER DATA
+DROP TABLE IF EXISTS game_dairy;
+CREATE TABLE game_dairy(
+action_id        INT               AUTO_INCREMENT,
+game_id          BIGINT,
+home             VARCHAR(255),
+away             VARCHAR(255),
+week             TINYINT,
+season           INT,
+year             VARCHAR(255),
+action_time      DATETIME,
+action           VARCHAR(255)      CHECK(action IN ("insert", "update","delete")),
+PRIMARY KEY(action_id)
+);
+
+
+
+-- INSERT DATA
 INSERT INTO game(game_id, home,away, week,season,year)
 SELECT DISTINCT game_id, home,away, week,season,year
 FROM all_plays;
@@ -214,9 +231,54 @@ USE vfb;
 
 -- Triggers
 
-DROP TRIGGER IF EXISTS insert_drive_check;
+DROP TRIGGER IF EXISTS insert_game_check
 DELIMITER //
-CREATE TRIGGER insert_drive_check
+CREATE TRIGGER insert_game_check
+AFTER INSERT
+ON game
+FOR EACH ROW
+BEGIN
+
+INSERT INTO game_dairy
+VALUES (DEFAULT, NEW.game_id, NEW.home,NEW.away,NEW.week, NEW.season,NEW.year, SYSDATE(), "insert");
+
+END//
+DELIMITER ;
+
+DROP TRIGGER IF EXISTS update_game_check
+DELIMITER //
+CREATE TRIGGER update_game_check
+AFTER UPDATE
+ON game
+FOR EACH ROW
+BEGIN
+
+INSERT INTO game_dairy
+VALUES (DEFAULT, OLD.game_id, OLD.home,OLD.away,OLD.week, OLD.season,OLD.year, SYSDATE(), "update");
+
+END//
+DELIMITER ;
+
+
+DROP TRIGGER IF EXISTS delete_game_check
+DELIMITER //
+CREATE TRIGGER delete_game_check
+AFTER DELETE
+ON game
+FOR EACH ROW
+BEGIN
+
+INSERT INTO game_dairy
+VALUES (DEFAULT, OLD.game_id, OLD.home,OLD.away,OLD.week, OLD.season,OLD.year, SYSDATE(), "delete");
+
+END//
+DELIMITER ;
+
+
+
+DROP TRIGGER IF EXISTS insert_drive_check1;
+DELIMITER //
+CREATE TRIGGER insert_drive_check1
 BEFORE INSERT 
 ON play_drive
 FOR EACH ROW
@@ -240,8 +302,7 @@ IF NEW.down > 4 THEN
 	WHERE drive_id = NEW.drive_id AND play_number = NEW.play_number;
 
 
-INSERT INTO drive_dairy(action_id,drive_id, play_number,action_time)
-VALUES(DEFAULT,NEW.drive_id, NEW.play_number, SYSDATE() );
+
 END IF;
 END //
 
@@ -249,6 +310,20 @@ END //
 DELIMITER ;
 
 
+DROP TRIGGER IF EXISTS insert_drive_check2;
+DELIMITER //
+CREATE TRIGGER insert_drive_check2
+AFTER INSERT 
+ON play_drive
+FOR EACH ROW
+BEGIN
+
+INSERT INTO drive_dairy
+VALUES(DEFAULT,NEW.drive_id, NEW.play_number, SYSDATE(),"insert");
+
+
+END //
+DELIMITER ;
 
 
 -- Procedures
@@ -329,6 +404,7 @@ ELSE
 	IF down <= 0 AND playtype != "2pt Conversion" AND playtype != "Extra Point Good" AND playtype != "Extra Point Missed" THEN 
 		SELECT "Wrong down value, please chack again";
     ELSE
+		
 		INSERT INTO drive(drive_id,drive_number,game_id)
         VALUES(driveid,drivenumber, gameid);
         INSERT INTO play(drive_id,play_number,period,offense_score,defense_score,offense_timeouts,defense_timeouts,offense,defense)
@@ -358,7 +434,6 @@ GROUP BY game_id;
 END //
 DELIMITER ;
 
-call exposive_play();
 
 
 

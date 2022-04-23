@@ -20,7 +20,7 @@
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav">
         <li class="nav-item">
-        <a class="nav-link" href="">Home</a>
+        <a class="nav-link" href="http://127.0.0.1:8000/">Home</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="">Display</a>
@@ -47,34 +47,44 @@
   </a>
   <a href="play_type" class="list-group-item list-group-item-action">Play Type</a>
   <a href="game_score" class="list-group-item list-group-item-action">Game Score</a>
-  <a href="team_score" class="list-group-item list-group-item-action">team_score</a>
+  <a href="team_score" class="list-group-item list-group-item-action">Team Score</a>
 </div>
 <br>
 <br>
+
+
 <center>
- <form action = "play_type">
-      <label for = "">
-          Play_Type: <input type = "text" name = "search_playtype">
+ <form action = "game_score">
+
+   <label for = "">
+          Home: <input type = "text" name = "game_score_home">
       </label>
    <label for = "">
-          Scoring: <input type = "text" name = "search_score">
+          Away: <input type = "text" name = "game_score_away">
+      </label>
+
+     <label for = "">
+          Season: <input type = "text" name = "game_score_season">
       </label>
       <label for = "">
            <input type = "submit" value = "Search">
       </label>
   </form>
-  </center>
+    </center>
 <br><br>
 
 
 <div class="container">
-  <h2 class="text-center">Play Type</h2><br>
+  <h2 class="text-center">Game Score</h2><br>
   <table class="table table-light table-striped">
     <thead>
       <tr>
 
-        <th>Play_Type</th>
-          <th>Scoring</th>
+          <th>Home</th>
+           <th>Away</th>
+          <th>Home Score</th>
+          <th>Away Score</th>
+          <th>Season</th>
 
 
       </tr>
@@ -83,10 +93,11 @@
     {% if db %}
     {% for i in db %}
       <tr>
-        <td>{{i.play_type}}</td>
-          <td>{{i.scoring}}</td>
-
-
+          <td>{{i.home}}</td>
+          <td>{{i.away}}</td>
+          <td>{{i.home_score}}</td>
+          <td>{{i.away_score}}</td>
+          <td>{{i.season}}</td>
       </tr>
     {% endfor %}
     {% endif %}

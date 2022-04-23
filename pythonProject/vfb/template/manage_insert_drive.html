@@ -1,0 +1,176 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Insert</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+
+</head>
+<body style="background-image: url({% static 'data_bg.jpg' %});
+        background-size:100% 100%;">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="">VFB Analysis Website</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="http://127.0.0.1:8000/">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="game">Display</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="delete">Management</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="dashboard1">Dashboard</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="drive_dairy">Action_Dairy</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<br>
+
+<a class="btn btn-secondary" href="delete" role="button">Delete a game</a>
+<a class="btn btn-info" href="update_game" role="button">Update Game</a>
+<a class="btn btn-info " href="insert_game" role="button">Insert a new game</a>
+<a class="btn btn-info" href="insert_drive" role="button">Insert a new drive</a>
+
+
+<br>
+<br>
+<br>
+
+<form>
+
+
+  <div class="form-row">
+    <div class="form-group col-md-2">
+      <label for="">Game ID</label>
+      <input type="number" class="form-control" id="inputPassword4" name = "insert_drive_gameid" required = "required">
+    </div>
+
+
+    <div class="form-group col-md-2">
+      <label for="">Drive Number</label>
+      <input type="number" class="form-control" id="inputPassword4" name = "insert_drive_drivenumber" required = "required">
+    </div>
+
+  </div>
+
+   <div class="form-row">
+    <div class="form-group col-md-3">
+      <label for="">Offense</label>
+      <input type="text" class="form-control" id="inputEmail4" name = "insert_drive_off" required = "required">
+
+    </div>
+     <div class="form-group col-md-3">
+      <label for="">Offense Score</label>
+      <input type="number" class="form-control" id="inputEmail4" name = "insert_drive_offscore" required = "required">
+
+    </div>
+
+  </div>
+
+
+    <div class="form-row">
+    <div class="form-group col-md-3">
+      <label for="">Defense</label>
+      <input type="text" class="form-control" id="inputEmail4" name = "insert_drive_de" required = "required">
+
+    </div>
+     <div class="form-group col-md-3">
+      <label for="">Defense Score</label>
+      <input type="number" class="form-control" id="inputEmail4" name = "insert_drive_descore" required = "required">
+
+    </div>
+
+  </div>
+
+
+
+
+
+<div class="form-row">
+    <div class="form-group col-md-2">
+      <label for="">Play Number</label>
+      <input type="number" class="form-control" id="inputEmail4" name = "insert_drive_playnumber" required = "required">
+
+    </div>
+    <div class="form-group col-md-2">
+      <label for="">Clock</label>
+      <input type="text" class="form-control" id="inputPassword4" name = "insert_drive_clock" required = "required">
+    </div>
+
+  </div>
+
+
+  <div class="form-row">
+    <div class="form-group col-md-1">
+      <label for="">Yard Line</label>
+      <input type="number" class="form-control" id="inputEmail4" name = "insert_drive_yardline" required = "required">
+
+    </div>
+    <div class="form-group col-md-1">
+      <label for="">Yard to Goal</label>
+      <input type="number" class="form-control" id="inputPassword4" name = "insert_drive_yardgoal" required = "required">
+    </div>
+    <div class="form-group col-md-1">
+      <label for="">Yards gained</label>
+      <input type="number" class="form-control" id="inputPassword4" name = "insert_drive_yardgain" required = "required">
+    </div>
+    <div class="form-group col-md-1">
+      <label for="">Down</label>
+      <input type="number" class="form-control" id="inputPassword4" name = "insert_drive_yarddown" required = "required">
+    </div>
+    <div class="form-group col-md-1">
+      <label for="">Distance</label>
+      <input type="number" class="form-control" id="inputPassword4" name = "insert_drive_distance" required = "required">
+    </div>
+     <div class="form-group col-md-1">
+      <label for="">Period</label>
+      <input type="number" class="form-control" id="inputPassword4" name = "insert_drive_period" required = "required">
+    </div>
+
+  </div>
+
+
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="">Play Type</label>
+      <input type="text" class="form-control" id="inputEmail4" name = "insert_drive_playtype" required = "required">
+
+    </div>
+
+  </div>
+    <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="">Play Text</label>
+      <input type="text" class="form-control" id="inputEmail4" name = "insert_drive_playtext" required = "required">
+
+    </div>
+
+  </div>
+
+  <center>
+  <button type="submit" class="btn btn-primary">Insert</button>
+    </center>
+</form>
+
+
+<br>
+{% if result %}
+<div class="alert alert-primary text-center" role="alert">
+  {{result}}
+  {% endif %}
+</div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
+</html>

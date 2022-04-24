@@ -296,7 +296,7 @@ END IF;
 IF NEW.down > 4 THEN
 	SET new_offense_value = (SELECT defense FROM play WHERE drive_id = NEW.drive_id AND play_number = NEW.play_number);
 	SET new_defense_value = (SELECT offense FROM play WHERE drive_id = NEW.drive_id AND play_number = NEW.play_number);
-	SET NEW.down = 4;
+	SET NEW.down = 1;
 	UPDATE play
 	SET defense = new_defense_value, offense = new_offense_value
 	WHERE drive_id = NEW.drive_id AND play_number = NEW.play_number;
@@ -354,7 +354,6 @@ DELIMITER ;
 
 
 -- delete_game
-
 USE vfb;
 DROP PROCEDURE IF EXISTS delete_game;
 DELIMITER //
@@ -394,8 +393,10 @@ DELIMITER //
 CREATE PROCEDURE insert_drive(IN gameid BIGINT, IN drivenumber TINYINT, IN off VARCHAR(255),IN off_score TINYINT,  IN de VARCHAR(255), IN de_score TINYINT,IN playnumber TINYINT, IN cl VARCHAR(255), IN yardline INT, IN yardgaol INT, IN yardgain INT, IN down INT, IN distance INT,IN period INT, IN playtype VARCHAR(800),IN playtext VARCHAR(800))
 BEGIN
 DECLARE driveid BIGINT;
+DECLARE sql_error INT DEFAULT FALSE;
 DECLARE EXIT HANDLER FOR 1452 SELECT "Please check the values you insert is right";
 DECLARE EXIT HANDLER FOR 1062 SELECT "Insert Failed because of duplicate key";
+DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET sql_error = TRUE;
 SET driveid = gameid *100 + drivenumber;
 
 IF NOT EXISTS (SELECT * FROM vfb.game WHERE game_id = gameid ) THEN 
@@ -404,14 +405,20 @@ ELSE
 	IF down <= 0 AND playtype != "2pt Conversion" AND playtype != "Extra Point Good" AND playtype != "Extra Point Missed" THEN 
 		SELECT "Wrong down value, please chack again";
     ELSE
-		
-		INSERT INTO drive(drive_id,drive_number,game_id)
-        VALUES(driveid,drivenumber, gameid);
-        INSERT INTO play(drive_id,play_number,period,offense_score,defense_score,offense_timeouts,defense_timeouts,offense,defense)
-        VALUES(driveid, playnumber, period, off_score, de_score,DEFAULT,DEFAULT,off, de);
-        INSERT INTO play_drive(I_D,drive_id,play_number,clock,yard_line,yards_to_goal,down,distance,yards_gained,play_type,play_text,ppa)
-        VALUES(DEFAULT,driveid, playnumber, cl, yardline, yardgaol, down, distance, yardgain, playtype,playtext,DEFAULT);
-        SELECT "Insert drive successfully";
+		START TRANSACTION;
+			INSERT INTO drive(drive_id,drive_number,game_id)
+			VALUES(driveid,drivenumber, gameid);
+			INSERT INTO play(drive_id,play_number,period,offense_score,defense_score,offense_timeouts,defense_timeouts,offense,defense)
+			VALUES(driveid, playnumber, period, off_score, de_score,DEFAULT,DEFAULT,off, de);
+			INSERT INTO play_drive(I_D,drive_id,play_number,clock,yard_line,yards_to_goal,down,distance,yards_gained,play_type,play_text,ppa)
+			VALUES(DEFAULT,driveid, playnumber, cl, yardline, yardgaol, down, distance, yardgain, playtype,playtext,DEFAULT);
+            IF sql_error = FALSE THEN 
+				COMMIT;
+				SELECT "Insert drive successfully!";
+			ELSE 
+				ROLLBACK;
+                SELECT "INSERT HAS BEEN ROLLED BACK";
+			END IF;
 	END IF;
 
 END IF;

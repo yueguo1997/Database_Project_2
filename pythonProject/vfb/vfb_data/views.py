@@ -234,29 +234,57 @@ def insert_drive(request):
 
 
 def dashboard1(request):
-    with connection.cursor() as cursor:
-        cursor.callproc("exposive_play",[])
-        result = cursor.fetchall()
-        list1 = []
-        list2 = []
-        for i in result:
-            list1.append(list(i)[0])
-            list2.append(list(i)[1])
-    graphs1 = []
-    graphs1.append(
-        go.Scatter(x=list1, y=list2, mode='markers', opacity=0.8,
-                   marker_size=list1, name='Scatter y2'))
+    result = "Please input the team name and season you want to check"
+    count = 0
+    if request.method == "GET":
+        get_team = request.GET.get("dashboard_team")
+        get_season = request.GET.get("dashboard_season")
+        if get_team == "" or  get_team is None or get_season == "" or  get_season is None:
+            result = "Please input valid value"
+        else:
+            with connection.cursor() as cursor:
+                cursor.callproc("explosive_play",[get_team, get_season])
+                result1 = cursor.fetchall()
+                list1 = []
+                list2 = []
+                for i in result1:
+                    list1.append(list(i)[0])
+                    list2.append(list(i)[1])
+            graphs1 = []
+            graphs1.append(
+                go.Scatter(x=list1, y=list2, mode='markers', opacity=0.8, marker_size=[i*10 for i in list2],name='Scatter y2'))
 
-    layout = {
-        'title': 'Title of the figure',
-        'xaxis_title': 'X_value',
-        'yaxis_title': 'Y',
-        'height': 600,
-        'width': 800,
-    }
-    plot_div1 = plot({'data': graphs1, 'layout': layout},
-                    output_type='div')
+            layout1 = {
+                'title': 'Explosive plays ' + get_team+ " in season " + get_season,
+                'xaxis_title': 'Explosive plays',
+                'yaxis_title': 'Off_TDS',
+                'height': 600,
+                'width': 800,
+            }
+            plot_div1 = plot({'data': graphs1, 'layout': layout1}, output_type='div')
+            result = " Here is the Statistical figure you want"
 
+            with connection.cursor() as cursor:
+                cursor.callproc("dashboard", [get_team, get_season])
+                result2 = cursor.fetchall()
+                list3 = []
+                list4 = []
+                for i in result2:
+                    list3.append(list(i)[5])
+                    list4.append(list(i)[11])
+            graphs2 = []
+            graphs2.append(
+                go.Scatter(x=list3, y=list4, mode='markers', opacity=0.8, marker_size=[i*3 for i in list4],
+                           name='Scatter'))
+
+            layout2 = {
+                'title': 'Pass plays ' + get_team + " in season " + get_season,
+                'xaxis_title': 'Pass incomplete',
+                'yaxis_title': 'pass complete',
+                'height': 600,
+                'width': 800,
+            }
+            plot_div2 = plot({'data': graphs2, 'layout': layout2}, output_type='div')
     return render(request,"dashboard1.html", locals())
 
 

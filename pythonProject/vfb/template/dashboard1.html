@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +9,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 </head>
-<body>
+<body style="background-image: url({% static 'data_bg.jpg' %});
+        background-size:100% 100%;">
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <a class="navbar-brand" href="">VFB Analysis Website</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -30,15 +32,46 @@
       </li>
 
         <li class="nav-item">
-        <a class="nav-link" href="drive_dairy">Action_Dairy</a>
+        <a class="nav-link" href="drive_dairy">Action Log</a>
       </li>
     </ul>
   </div>
 </nav>
 
+<br>
+<br>
+
+<center>
+ <form action = "dashboard1">
+
+   <label for = "">
+          Team: <input type = "text" name = "dashboard_team" required = "required">
+      </label>
+   <label for = "">
+          Season: <input type = "number" name = "dashboard_season" required = "required" >
+      </label>
+      <label for = "">
+           <input type = "submit" value = "Search">
+      </label>
+  </form>
+    </center>
+<br>
+{% if result %}
+<center>
+{{ result }}
+</center>
+{% endif %}
+
+{% if plot_div1 %}
 {% autoescape off %}
+<center>
 {{ plot_div1 }}
+    {{ plot_div2}}
+</center>
+
 {% endautoescape %}
+{% endif %}
+
 
 </body>
 </html>

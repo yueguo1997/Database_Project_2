@@ -442,8 +442,59 @@ END //
 DELIMITER ;
 
 
+-- Dashboard procedure
+-- updated explosive_play
+-- verified it works correctly at game level
+DROP PROCEDURE IF EXISTS explosive_play;
+DELIMITER //
+CREATE PROCEDURE explosive_play(IN team_value VARCHAR(255),IN season_value INT)
+BEGIN
+SELECT  SUM(CASE WHEN ((play_type LIKE "%Pass%" AND yards_gained > 16) OR
+                         (play_type LIKE "%Rush%" AND yards_gained >= 12)) THEN 1
+                   ELSE 0 END) AS explosive_play_number,
+		COUNT(CASE WHEN (play_type = "Passing Touchdown" OR play_type = 'Rushing Touchdown') THEN 1
+                     ELSE NULL END) AS offensive_touchdowns
+    FROM play_drive
+             JOIN (SELECT * FROM play WHERE offense = team_value) a USING (drive_id, play_number)
+             JOIN  drive USING (drive_id)
+             JOIN (SELECT * FROM game WHERE season = season_value) b USING (game_id)
+	GROUP BY game_id;
+
+END //
+
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS dashboard;
+DELIMITER //
+CREATE PROCEDURE dashboard(IN team_value VARCHAR(255),IN season_value INT)
+BEGIN
+SELECT *,
+		(pass_completion1 + pass_td+ pass_interception+pass_incomplete) AS pass_attempt,
+		(pass_completion1+ pass_td) AS pass_completion
+        
+FROM (
+select offense AS offense,
+      game_id AS game_id,
+       sum(CASE WHEN (play_type = 'Pass Completion') THEN 1 ELSE 0 END) AS pass_completion1,
+       sum(CASE WHEN (play_type = 'Passing Touchdown') THEN 1 ELSE 0 END)  AS pass_td,
+       sum(CASE WHEN (play_type = 'Pass Interception') THEN 1 ELSE 0 END)  AS pass_interception,
+       sum(CASE WHEN (play_type = 'Pass Incompletion') THEN 1 ELSE 0 END)    AS pass_incomplete,
+       sum(CASE WHEN (play_type = 'Rush' OR play_type = 'Rushing Touchdown') THEN 1 ELSE 0 END)  AS rush_attempt,
+       sum(CASE WHEN (play_type = 'Rush Touchdown') THEN 1 ELSE 0 END) AS rush_td,
+       sum(CASE WHEN (play_type = 'Fumble') THEN 1 ELSE 0 END) AS fumble,
+       sum(CASE WHEN (play_type = 'Fumble Recovery') THEN 1 ELSE 0 END) AS fumble_recovery
+       
+FROM play_drive
+             JOIN (SELECT * FROM play WHERE offense = team_value) a USING (drive_id, play_number)
+             JOIN  drive USING (drive_id)
+             JOIN (SELECT * FROM game WHERE season = season_value) b USING (game_id)
+GROUP BY game_id) t1;
+END //
+
+DELIMITER ;
 
 
+CALL dashboard('Arkansas', 2018);
 
 -- Views
 USE vfb;

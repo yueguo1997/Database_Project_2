@@ -8,35 +8,19 @@ from vfb_data.models import *
 
 
 def search_game(request):
-    db = Game.objects.all()[:100]
+    db = PlayDrive.objects.all()[:100]
     dict = {}
     count = 0
     if request.method == "GET":
         get_id = request.GET.get("game_id")
         if get_id != "" and get_id is not None:
-            dict["game_id"] = get_id
-            count = count + 1
-        get_home = request.GET.get("home")
-        if get_home != "" and get_home is not None:
-            dict["home"] = get_home
-            count = count + 1
-        get_away = request.GET.get("away")
-        if get_away != "" and get_away is not None:
-            dict["away"] = get_away
-            count = count + 1
-        get_week = request.GET.get("week")
-        if get_week != "" and get_week is not None:
-            dict["week"] = get_week
-            count = count + 1
-        get_season = request.GET.get("season")
-        if get_season  != "" and get_season  is not None:
-            dict["season"] = get_season
+            dict["drive_id"] = get_id
             count = count + 1
 
         if  count == 0:
-            db = Game.objects.all()[:100]
+            db = PlayDrive.objects.all()[:100]
         else:
-            db = Game.objects.filter(**dict)[:100]
+            db = PlayDrive.objects.filter(**dict)[:100]
 
     return render(request, "display.html",locals())
 

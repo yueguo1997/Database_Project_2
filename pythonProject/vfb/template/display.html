@@ -43,7 +43,7 @@
 
 <div class="list-group list-group-horizontal">
   <a href="game" class="list-group-item list-group-item-action" aria-current="true">
-    Game
+    Play
   </a>
   <a href="play_type" class="list-group-item list-group-item-action">Play Type</a>
   <a href="game_score" class="list-group-item list-group-item-action">Game Score</a>
@@ -55,39 +55,32 @@
 
 
  <form action = "game">
+     <center>
       <label for = "">
-          Game_ID: <input type = "text" name = "game_id">
-      </label>
-   <label for = "">
-          Home: <input type = "text" name = "home">
-      </label>
-   <label for = "">
-          Away: <input type = "text" name = "away">
-      </label>
-     <label for = "">
-          Week: <input type = "text" name = "week">
-      </label>
-     <label for = "">
-          Season: <input type = "text" name = "season">
+          Drive ID: <input type = "text" name = "game_id">
       </label>
       <label for = "">
            <input type = "submit" value = "Search">
       </label>
+         </center>
   </form>
 <br><br>
 
 
 <div class="container">
-  <h2 class="text-center">Game</h2><br>
+  <h2 class="text-center">Play</h2><br>
   <table class="table table-light table-striped">
     <thead>
       <tr>
 
-        <th>Game id</th>
-          <th>Home</th>
-           <th>Away</th>
-          <th>Week</th>
-          <th>Season</th>
+        <th>Drive id</th>
+          <th>Down</th>
+           <th>Distance</th>
+           <th>Yards Line</th>
+           <th>Yards to Goal</th>
+          <th>Yards Gained</th>
+          <th>Play Type</th>
+
 
 
       </tr>
@@ -96,11 +89,13 @@
     {% if db %}
     {% for i in db %}
       <tr>
-        <td>{{i.game_id}}</td>
-          <td>{{i.home}}</td>
-          <td>{{i.away}}</td>
-          <td>{{i.week}}</td>
-          <td>{{i.season}}</td>
+        <td>{{i.drive_id}}</td>
+          <td>{{i.down}}</td>
+          <td>{{i.distance}}</td>
+          <td>{{i.yard_line}}</td>
+          <td>{{i.yards_to_goal}}</td>
+          <td>{{i.yards_gained}}</td>
+          <td>{{i.play_type}}</td>
       </tr>
     {% endfor %}
     {% endif %}

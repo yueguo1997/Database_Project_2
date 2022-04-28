@@ -43,6 +43,7 @@ CREATE TABLE IF NOT EXISTS all_plays (
 -- Some values in the dataset is '' value and its datatype in the magetable is INt, which will casue problem when we load data.
 -- Therefore, we will change these '' value into NULL value. 
 -- Also ignore the first line of variable names
+-- Data source: https://drive.google.com/file/d/1k4XSZeyNO7ZEdn90TZo9WADNjZqxb6H2/view?usp=sharing
 
 LOAD DATA LOW_PRIORITY
 INFILE "/Users/pangli/Desktop/all_plays2 (1) copy.csv"
@@ -154,6 +155,10 @@ CONSTRAINT fk_offense FOREIGN KEY (offense)
 CONSTRAINT fk_defense FOREIGN KEY (defense)
     REFERENCES team_defense(defense)
     ON DELETE CASCADE
+    ON UPDATE CASCADE,
+CONSTRAINT fk_newdrive FOREIGN KEY (drive_id)
+    REFERENCES drive(drive_id)
+    ON DELETE CASCADE
     ON UPDATE CASCADE
 );
 
@@ -214,7 +219,66 @@ action           VARCHAR(255)      CHECK(action IN ("insert", "update","delete")
 PRIMARY KEY(action_id)
 );
 
+-- Verify whether the decomposition meets 3CNF
+-- In this part we will use group by key to check. If the table meets 3CNF, then there will be nothing returned.
+SELECT  COUNT(DISTINCT offense_conference)
+FROM all_plays
+GROUP BY offense,year
+HAVING  COUNT(DISTINCT offense_conference)>1;
 
+SELECT  COUNT(DISTINCT defense_conference)
+FROM all_plays
+GROUP BY defense,year
+HAVING  COUNT(DISTINCT defense_conference)>1;
+
+
+SELECT game_id
+FROM all_plays
+GROUP BY game_id
+HAVING  COUNT(DISTINCT home)>1 
+		or COUNT(DISTINCT away)>1 
+        or COUNT(DISTINCT week)>1 
+        or COUNT(DISTINCT season)>1 
+        or COUNT(DISTINCT year)>1;
+
+SELECT drive_id
+FROM all_plays
+GROUP BY drive_id
+HAVING  COUNT(DISTINCT drive_number)>1 
+		or COUNT(DISTINCT game_id)>1;
+
+
+SELECT play_type
+FROM all_plays
+GROUP BY play_type
+HAVING  COUNT(DISTINCT scoring)>1;
+
+SELECT drive_id, play_number
+FROM all_plays
+GROUP BY drive_id,play_number
+HAVING  COUNT(DISTINCT period)>1 
+		or COUNT(DISTINCT offense_score)>1 
+        or COUNT(DISTINCT defense_score)>1 
+        or COUNT(DISTINCT offense_timeouts)>1 
+        or COUNT(DISTINCT defense_timeouts)>1
+        or COUNT(DISTINCT wallclock)>1 
+        or COUNT(DISTINCT offense)>1 
+        or COUNT(DISTINCT defense)>1;
+
+SELECT I_D
+FROM all_plays
+GROUP BY I_D
+HAVING  COUNT(DISTINCT drive_id)>1 
+		or COUNT(DISTINCT play_number)>1 
+        or COUNT(DISTINCT clock)>1 
+        or COUNT(DISTINCT yard_line)>1 
+        or COUNT(DISTINCT yards_to_goal)>1
+        or COUNT(DISTINCT down)>1 
+        or COUNT(DISTINCT distance)>1 
+        or COUNT(DISTINCT yards_gained)>1
+        or COUNT(DISTINCT play_type)>1 
+        or COUNT(DISTINCT play_text)>1
+        or COUNT(DISTINCT ppa)>1;
 
 -- Insert data from maga table into each decompsition table
 INSERT INTO game(game_id, home,away, week,season,year)
@@ -273,7 +337,7 @@ USE vfb;
 -- Create insert_game_check trigger
 -- This trigger will record the data after any inserting on the game table
 -- It records what values have been inserted in game table, the operation time and set action as "insert"
-DROP TRIGGER IF EXISTS insert_game_check
+DROP TRIGGER IF EXISTS insert_game_check;
 DELIMITER //
 CREATE TRIGGER insert_game_check
 AFTER INSERT
@@ -290,7 +354,7 @@ DELIMITER ;
 -- Create trigger update_game_check
 -- This trigger will record the data after any updating on the game table
 -- It records the old data before update, the operation time and set action as "update"
-DROP TRIGGER IF EXISTS update_game_check
+DROP TRIGGER IF EXISTS update_game_check;
 DELIMITER //
 CREATE TRIGGER update_game_check
 AFTER UPDATE
@@ -307,7 +371,7 @@ DELIMITER ;
 -- Create trigger delete_game_check
 -- This trigger will record the data after any deleting on the game table
 -- It records the old data before deleting, the operation time and set action as "delete"
-DROP TRIGGER IF EXISTS delete_game_check
+DROP TRIGGER IF EXISTS delete_game_check;
 DELIMITER //
 CREATE TRIGGER delete_game_check
 AFTER DELETE
@@ -433,7 +497,7 @@ IF NOT EXISTS (select * from vfb.game where game_id = a) THEN
     SELECT CONCAT("Game ID ",a, " doesn't exist");
 ELSE
     UPDATE game SET home=b, away=c, week=d, season=e, year=f WHERE game_id=a;
-    SELECT CONCAT("Game ID ",a," updated sucessfully");
+    SELECT CONCAT("Game ID ",a," updated successfully");
 END IF;
 END //
 DELIMITER ;
